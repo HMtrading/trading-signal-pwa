@@ -1,16 +1,18 @@
-self.addEventListener("install", (event) => {
-    console.log("Service Worker Installed");
+self.addEventListener('install', function(event) {
+    console.log('Service Worker installing.');
     event.waitUntil(
-        caches.open("static").then((cache) => {
-            return cache.addAll(["/index.html", "/manifest.json"]);
+        caches.open('trade-bot-cache').then(function(cache) {
+            return cache.addAll([
+                'index.html',
+                'manifest.json'
+            ]);
         })
     );
 });
 
-self.addEventListener("fetch", (event) => {
-    console.log("Fetching:", event.request.url);
+self.addEventListener('fetch', function(event) {
     event.respondWith(
-        caches.match(event.request).then((response) => {
+        caches.match(event.request).then(function(response) {
             return response || fetch(event.request);
         })
     );
